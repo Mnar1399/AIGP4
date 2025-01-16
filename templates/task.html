@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Board</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+        .board {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .navbar {
+            background-color: #343a40;
+            border-bottom: 2px solid #007bff;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .navbar-brand:hover {
+            color: #007bff;
+        }
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1rem;
+            margin-right: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #007bff;
+        }
+        .column {
+            width: 22%;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .column h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .task {
+            background-color: #e3e3e3;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: grab;
+        }
+        .task:hover {
+            background-color: #d3d3d3;
+        }
+    </style>
+</head>
+<body>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg" data-intro="This is the navigation bar. Use it to navigate the site." data-step="1">
+            <a class="navbar-brand" href="/aigp">AIGP</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="/aigp">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Game Idea</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/task">task</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cost">VR</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/draw">draw</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/feedback">Feedback</a></li>
+                </ul>
+            </div>
+        </nav>
+    <div class="container">
+        <h1 class="text-center mt-4">Task Board</h1>
+        <div class="board">
+            <div class="column" id="todo" data-intro="Tasks that need to be done go here." data-step="2">
+                <h3>Need to do</h3>
+                <div class="task" draggable="true" data-intro="This is a draggable task. You can move it to another column." data-step="3">CODE: Player Movement</div>
+                <div class="task" draggable="true">CODE: Boss Behavior</div>
+                <div class="task" draggable="true">ART: Environment</div>
+                <button class="btn btn-primary btn-sm mt-3" onclick="addTask('todo')">Add a card</button>
+            </div>
+            <div class="column" id="working" data-intro="Tasks currently in progress are shown here." data-step="4">
+                <h3>On Working</h3>
+                <div class="task" draggable="true">ART: Player</div>
+                <div class="task" draggable="true">ART: Bosses</div>
+                <button class="btn btn-primary btn-sm mt-3" onclick="addTask('working')">Add a card</button>
+            </div>
+            <div class="column" id="done" data-intro="This column contains completed tasks." data-step="5">
+                <h3>Done</h3>
+                <button class="btn btn-primary btn-sm mt-3" onclick="addTask('done')">Add a card</button>
+            </div>
+            <div class="column" id="others" data-intro="Other tasks can be managed here." data-step="6">
+                <h3>Others</h3>
+                <button class="btn btn-primary btn-sm mt-3" onclick="addTask('others')">Add a card</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script>
+        const columns = document.querySelectorAll('.column');
+        let draggedTask = null;
+
+        document.querySelectorAll('.task').forEach(task => {
+            task.addEventListener('dragstart', function () {
+                draggedTask = this;
+                setTimeout(() => this.style.display = 'none', 0);
+            });
+
+            task.addEventListener('dragend', function () {
+                setTimeout(() => {
+                    this.style.display = 'block';
+                    draggedTask = null;
+                }, 0);
+            });
+        });
+
+        columns.forEach(column => {
+            column.addEventListener('dragover', function (e) {
+                e.preventDefault();
+            });
+
+            column.addEventListener('drop', function () {
+                if (draggedTask) {
+                    this.appendChild(draggedTask);
+                }
+            });
+        });
+
+        function addTask(columnId) {
+            const taskText = prompt("Enter task description:");
+            if (taskText) {
+                const newTask = document.createElement('div');
+                newTask.className = 'task';
+                newTask.textContent = taskText;
+                newTask.setAttribute('draggable', 'true');
+
+                newTask.addEventListener('dragstart', function () {
+                    draggedTask = this;
+                    setTimeout(() => this.style.display = 'none', 0);
+                });
+
+                newTask.addEventListener('dragend', function () {
+                    setTimeout(() => {
+                        this.style.display = 'block';
+                        draggedTask = null;
+                    }, 0);
+                });
+
+                document.getElementById(columnId).appendChild(newTask);
+            }
+        }
+
+        // Start the tour automatically on page load
+        window.onload = function () {
+            introJs().start();
+        };
+    </script>
+</body>
+</html>

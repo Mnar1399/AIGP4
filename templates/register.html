@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input id="name" type="text" name="name" placeholder="Your Name" required>
+        
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" placeholder="Your Email" required>
+        
+        <label for="password">Password:</label>
+        <input 
+            id="password" 
+            type="password" 
+            name="password" 
+            placeholder="Your Password" 
+            required 
+            pattern="^[A-Za-z0-9]+$" 
+            minlength="8" 
+            maxlength="20" 
+            title="Password must contain only letters and numbers, and be 8-20 characters long."
+        >
+        <button type="submit">Sign Up</button>
+    </form>
+    <a href="{{ url_for('login') }}">Already have an account? Log in</a>
+
+    <!-- Optional JavaScript confirmation -->
+    <script>
+        document.querySelector('form').onsubmit = function() {
+            return confirm('Are you sure you want to submit the form?');
+        };
+    </script>
+</body>
+</html>

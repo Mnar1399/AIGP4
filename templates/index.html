@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>GAIM</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .input-card {
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 1.5rem;
+        }
+        .analyze-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .analyze-btn:hover {
+            background-color: #0056b3;
+        }
+        .result-card {
+            background: #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">GAIM</div>
+        <div class="input-card">
+            <form method="POST" action="/">
+                <div class="form-group">
+                    <label for="gameIdea">Enter Your Game Idea</label>
+                    <textarea class="form-control" id="gameIdea" name="idea" rows="5" placeholder="Enter your game idea here..."></textarea>
+                </div>
+                <button type="submit" class="analyze-btn">Analyze</button>
+            </form>
+        </div>
+        {% if key_phrases or openai_response %}
+        <div class="result-card">
+            <h4>Key Phrases:</h4>
+            <p>{{ key_phrases }}</p>
+            <h4>AI Analysis Result:</h4>
+            <p>{{ openai_response }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

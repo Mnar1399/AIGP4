@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Drawing App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.0.0/introjs.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.0.0/intro.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .app-container {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+        .tools-panel, .color-panel {
+            width: 100px;
+            padding: 10px;
+            background-color: #444;
+            border-right: 1px solid #555;
+        }
+        .tools-panel button, .color-panel button, .color-panel input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tools-panel button:hover, .color-panel button:hover {
+            background-color: #666;
+        }
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+        .canvas-grid {
+            border: 1px solid #ddd;
+            display: grid;
+            grid-template-columns: repeat(32, 20px);
+            grid-template-rows: repeat(32, 20px);
+        }
+        .canvas-cell {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+        .color-box {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <div class="navbar" data-intro="This is the main navigation bar. Use it to navigate between sections." data-step="1">>
+        
+        <a href="/aigp" class="logo">AIGP</a>
+        <div class="nav-links">
+            <a href="/aigp">Home</a>
+            <a href="/">Game Idea</a>
+            <a href="/task">Task</a>
+            <a href="/cost">VR</a>
+            <a href="/draw">Draw</a>
+            <a href="/feedback">Feedback</a>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- شريط الأدوات -->
+        <div class="tools-panel" data-intro="These are the main tools for drawing. Select a tool to start drawing." data-step="2">
+            <button id="brushTool">🖌️</button>
+            <button id="eraserTool">🧽</button>
+            <button id="fillTool">🪣</button>
+            <button id="clearBoard">🗑️</button>
+            <button id="saveButton">💾</button>
+        </div>
+
+        <!-- منطقة الرسم -->
+        <div class="canvas-container" data-intro="This is the drawing area. Use the tools to create your pixel art here." data-step="3">
+       
+            <div class="canvas-grid" id="canvasGrid"></div>
+        </div>
+
+        <!-- شريط التحكم بالألوان -->
+        <div class="color-panel" data-intro="Pick or add colors to use in your drawing." data-step="4">
+            <input type="color" id="colorPicker">
+            <button id="addColor">Add Color</button>
+            <div id="colorPalette" class="color-palette"></div>
+        </div>
+    </div>
+
+    <script>
+        // إعداد المتغيرات
+        const canvasGrid = document.getElementById('canvasGrid');
+        const colorPicker = document.getElementById('colorPicker');
+        const colorPalette = document.getElementById('colorPalette');
+        const brushTool = document.getElementById('brushTool');
+        const eraserTool = document.getElementById('eraserTool');
+        const fillTool = document.getElementById('fillTool');
+        const clearBoard = document.getElementById('clearBoard');
+        const addColor = document.getElementById('addColor');
+        const saveButton = document.getElementById('saveButton');
+        let selectedColor = '#000000';
+        let currentTool = 'brush';
+        let isDrawing = false;
+
+        // إعداد شبكة الرسم
+        for (let i = 0; i < 1024; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('canvas-cell');
+            cell.addEventListener('mousedown', () => {
+                isDrawing = true;
+                applyTool(cell);
+            });
+            cell.addEventListener('mousemove', (e) => {
+                if (isDrawing) applyTool(cell);
+            });
+            cell.addEventListener('mouseup', () => {
+                isDrawing = false;
+            });
+            canvasGrid.appendChild(cell);
+        }
+
+        // أدوات الرسم
+        brushTool.addEventListener('click', () => setTool('brush'));
+        eraserTool.addEventListener('click', () => setTool('eraser'));
+        fillTool.addEventListener('click', fillBoard);
+        clearBoard.addEventListener('click', clearBoardFunc);
+
+        function setTool(tool) {
+            currentTool = tool;
+            document.querySelectorAll('.tools-panel button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tool + 'Tool').classList.add('active');
+        }
+
+        function applyTool(cell) {
+            if (currentTool === 'brush') {
+                cell.style.backgroundColor = selectedColor;
+            } else if (currentTool === 'eraser') {
+                cell.style.backgroundColor = '#fff';
+            }
+        }
+
+        function fillBoard() {
+            document.querySelectorAll('.canvas-cell').forEach(cell => {
+                cell.style.backgroundColor = selectedColor;
+            });
+        }
+
+        function clearBoardFunc() {
+            document.querySelectorAll('.canvas-cell').forEach(cell => {
+                cell.style.backgroundColor = '#fff';
+            });
+        }
+
+        // إنشاء لوحة الألوان
+        const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+        colors.forEach(color => {
+            createColorBox(color);
+        });
+
+        // إضافة لون جديد من منتقي الألوان
+        addColor.addEventListener('click', () => {
+            createColorBox(colorPicker.value);
+        });
+
+        function createColorBox(color) {
+            const colorBox = document.createElement('div');
+            colorBox.classList.add('color-box');
+            colorBox.style.backgroundColor = color;
+            colorBox.addEventListener('click', () => {
+                selectedColor = color;
+            });
+            colorPalette.appendChild(colorBox);
+        }
+
+        // زر الحفظ
+        saveButton.addEventListener('click', () => {
+            html2canvas(canvasGrid).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'pixel_art.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        });
+
+        // بدء الجولة الإرشادية عند تحميل الصفحة
+        window.onload = function() {
+            introJs().start();
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>

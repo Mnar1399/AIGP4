@@ -1,0 +1,20 @@
+from flask import Flask, render_template, request, session
+from analyze_idea import analyze_key_phrases, analyze_game_idea, analyze_project_cost
+from task_utils import analyze_animation_suggestions, generate_character_images, suggest_gameplay_code
+from flask import Flask, render_template, request, redirect, url_for
+from flask_mail import Mail, Message
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+import os
+from analyze_idea import analyze_key_phrases, analyze_game_idea, analyze_project_cost
+import requests
+import random, re
+from flask import Flask, send_from_directory, request, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
+from PIL import Image, ImageDraw
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+import os
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        /* Profile Container */
+        .profile {
+            text-align: center;
+            margin: 50px auto;
+            font-family: Arial, sans-serif;
+            color: #333;
+            max-width: 600px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Welcome Header */
+        .profile h1 {
+            font-size: 2rem;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        /* Profile Details */
+        .profile p {
+            font-size: 1rem;
+            margin: 10px 0;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* Button Styling */
+        .profile .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Logout Link */
+        .profile a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .profile a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile">
+        <!-- Welcome Message -->
+        <h1>Welcome, {{ user.name }}</h1>
+        <p>Email: {{ user.email }}</p>
+        
+        <p>
+            Welcome to AIGP! This platform is designed to help you explore, create, and enjoy programming games using advanced tools and features. 
+            We are thrilled to have you join us on this exciting journey!
+        </p>
+
+        <!-- Button to Homepage -->
+        <form action="{{ url_for('aigp') }}">
+            <button type="submit" class="btn">Go to Homepage</button>
+        </form>
+
+        <!-- Logout Link -->
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Game Idea Analysis</h1>
+        <hr>
+        <h2>Your Idea:</h2>
+        <p>{{ idea }}</p>
+
+        <h2>Analysis:</h2>
+        <p>{{ analysis }}</p>
+
+        <h2>Key Phrases:</h2>
+        <ul>
+            {% for phrase in key_phrases %}
+            <li>{{ phrase }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="mt-4">
+            <a href="/choose_engine" class="btn btn-primary">Choose Engine</a>
+            <a href="/" class="btn btn-secondary">Analyze Another Idea</a>
+        </div>
+    </div>
+</body>
+</html>

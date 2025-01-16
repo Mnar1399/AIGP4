@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIGP - Analyze Your Idea</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Intro.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.0.0/introjs.min.css">
+<!-- Intro.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.0.0/intro.min.js"></script>
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: #343a40;
+            border-bottom: 2px solid #007bff;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .navbar-brand:hover {
+            color: #007bff;
+        }
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1rem;
+            margin-right: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #007bff;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            width: 100%;
+            font-size: 1rem;
+            padding: 10px;
+        }
+        .tooltip-text {
+            visibility: hidden;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 1;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+        }
+        .results-container {
+            margin-top: 30px;
+        }
+        .results-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .details-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="/aigp">AIGP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/aigp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Game Idea</a></li>
+                <li class="nav-item"><a class="nav-link" href="/task">task</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cost">VR</a></li>
+                <li class="nav-item"><a class="nav-link" href="/draw">draw</a></li>
+                <li class="nav-item"><a class="nav-link" href="/feedback">Feedback</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="title" data-intro="Welcome to the Game Idea Page! Here you can submit your game idea." data-step="1">Analyze Your Game Idea</h1>
+
+        <form method="POST" action="/">
+            <div class="form-group" data-intro="Enter your game idea in this text box." data-step="2">
+                <label for="gameIdea">Enter Your Game Idea</label>
+                <textarea class="form-control" id="gameIdea" name="idea" rows="3" placeholder="Enter your game idea here..." required></textarea>
+            </div>
+            <div class="form-group" data-intro="Select a game engine from this dropdown." data-step="3">
+                <label for="engine">Select Game Engine</label>
+                <select class="form-control" id="engine" name="engine" required>
+                    <option value="unity" class="tooltip">Unity <span class="tooltip-text">Popular for 2D and 3D games.</span></option>
+                    <option value="unreal" class="tooltip">Unreal Engine <span class="tooltip-text">High-quality rendering and tools.</span></option>
+                    <option value="godot" class="tooltip">Godot <span class="tooltip-text">Lightweight and open-source.</span></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" data-intro="Click this button to analyze your game idea." data-step="4">Analyze</button>
+        </form>
+
+        <!-- Results Section -->
+        {% if game_name or idea_summary or requirements or tasks %}
+        <div class="results-container">
+            {% if game_name %}
+            <div class="results-header">Game Name:</div>
+            <p>{{ game_name }}</p>
+            {% endif %}
+            
+            {% if idea_summary %}
+            <div class="results-header">Idea Summary:</div>
+            <p>{{ idea_summary }}</p>
+            {% endif %}
+            
+            {% if requirements %}
+            <div class="results-header">Requirements:</div>
+            <ul>
+                {% for req in requirements %}
+                <li>{{ req }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
+            {% if tasks %}
+            <div class="results-header">Tasks:</div>
+            <ul>
+                {% for task in tasks %}
+                <li>{{ task }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        
+        <!-- Details Button -->
+        <div class="details-button" data-intro="Click here to view more details about your analysis results." data-step="5">
+            Details
+        </div>
+            <a href="/details/{{ selected_engine }}" class="btn btn-info">View Details</a>
+
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+   
+    <!-- تشغيل الجولة التعليمية تلقائيًا -->
+    <script>
+        window.onload = () => {
+            introJs().start();
+        };
+    </script>
+
+</body>
+</html>
+

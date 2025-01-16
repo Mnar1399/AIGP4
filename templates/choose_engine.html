@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Game Engine</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .engine-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+        .engine-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .engine-card h3 {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Choose Your Game Engine</h1>
+        <hr>
+        <form method="POST" action="/choose_engine">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="engine-card">
+                        <h3>Unity</h3>
+                        <p>A powerful and versatile engine for creating 2D and 3D games.</p>
+                        <button type="submit" name="engine" value="unity" class="btn btn-primary">Choose Unity</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="engine-card">
+                        <h3>Unreal Engine</h3>
+                        <p>An advanced engine for high-fidelity graphics and cinematic experiences.</p>
+                        <button type="submit" name="engine" value="unreal" class="btn btn-primary">Choose Unreal</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

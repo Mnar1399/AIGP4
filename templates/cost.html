@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Development Hub</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <style>
+        body {
+            background-color: #eaeaea;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .section-title {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #343a40;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #6c757d;
+            color: white;
+            font-weight: bold;
+        }
+        .code-box {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .video-section iframe {
+            width: 100%;
+            height: 360px;
+            border: none;
+        }
+        .video-section p {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #6c757d;
+        }
+        button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg" data-intro="This is the navigation bar where you can navigate to different sections." data-step="1">
+        <a class="navbar-brand" href="/aigp">AIGP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/aigp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Game Idea</a></li>
+                <li class="nav-item"><a class="nav-link" href="/task">task</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cost">VR</a></li>
+                <li class="nav-item"><a class="nav-link" href="/draw">draw</a></li>
+                <li class="nav-item"><a class="nav-link" href="/feedback">Feedback</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="section-title" data-intro="Welcome to the VR Development Hub! Here, you can explore various VR tools and guides." data-step="2">Welcome to the VR Development Hub</h1>
+
+        <!-- Getting Started Section -->
+        <div class="card mb-4" data-intro="This section explains how to get started with VR development." data-step="3">
+            <div class="card-header">Getting Started with VR Development</div>
+            <div class="card-body">
+                <p>Learn how to create VR experiences using popular engines:</p>
+                <ul>
+                    <li>Download and install Unity or Unreal Engine.</li>
+                    <li>Set up the VR SDK (SteamVR, Oculus SDK).</li>
+                    <li>Create a new project and add a basic scene.</li>
+                    <li>Use controllers for interaction and navigation.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Video Tutorial Section -->
+        <div class="card mb-4 video-section" data-intro="Watch this quick tutorial to understand VR development basics." data-step="4">
+            <div class="card-header">Watch a Quick VR Tutorial</div>
+            <div class="card-body">
+                <iframe src="https://www.youtube.com/embed/kbBYcVrGZus" allowfullscreen></iframe>
+                <p>Explore the basics of VR development in this quick tutorial.</p>
+            </div>
+        </div>
+
+        <!-- Q&A Section -->
+        <div class="card mb-4" data-intro="Ask questions about VR development and get instant replies." data-step="5">
+            <div class="card-header">Ask a Question</div>
+            <div class="card-body">
+                <textarea id="userQuestion" class="form-control" rows="3" placeholder="Ask anything about VR development..."></textarea>
+                <button class="btn btn-secondary mt-2" id="askButton">Ask</button>
+                <div class="mt-3" id="botReply" style="display: none;">
+                    <h5>Bot Reply:</h5>
+                    <p id="replyText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Bot Interaction and Tour -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script>
+        window.onload = function () {
+            introJs().start(); // Start the tour automatically on page load
+        };
+
+        document.getElementById('askButton').addEventListener('click', function() {
+            const question = document.getElementById('userQuestion').value;
+
+            if (!question) {
+                alert('Please enter a question!');
+                return;
+            }
+
+            fetch('/ask_bot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.reply) {
+                    document.getElementById('botReply').style.display = 'block';
+                    document.getElementById('replyText').textContent = data.reply;
+                } else {
+                    alert(data.error || 'Something went wrong.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to communicate with the bot.');
+            });
+        });
+    </script>
+</body>
+</html>

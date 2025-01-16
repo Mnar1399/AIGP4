@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ engine_data.name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h3 {
+            color: #007bff;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        #botReply {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        textarea {
+            resize: none;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a href="/" class="btn btn-outline-primary">Back to game idea</a>
+    </div>
+    <div class="container">
+        <!-- محرك اللعبة -->
+        <h1>{{ engine_data.name }}</h1>
+        <p>{{ engine_data.description }}</p>
+
+        <!-- خطوات الاستخدام -->
+        <h3>How to Use:</h3>
+        <ul>
+            {% for step in engine_data.how_to_use %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- قسم البوت -->
+        <h3>Ask the Bot</h3>
+        <textarea id="userQuestion" class="form-control" rows="3" placeholder="Ask anything about {{ engine_data.name }}..."></textarea>
+        <button class="btn btn-primary mt-3" id="askButton">Ask</button>
+        <div id="botReply" style="display: none;">
+            <h5>Bot Reply:</h5>
+            <pre id="replyText" style="white-space: pre-wrap;"></pre>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('askButton').addEventListener('click', function() {
+            const question = document.getElementById('userQuestion').value;
+            const engine = "{{ engine }}";
+
+            if (!question) {
+                alert('Please enter a question!');
+                return;
+            }
+
+            fetch('/ask_bot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question, engine: engine })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.reply) {
+                    document.getElementById('botReply').style.display = 'block';
+                    document.getElementById('replyText').textContent = data.reply;
+                } else {
+                    alert(data.error || 'Something went wrong.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to communicate with the bot.');
+            });
+        });
+    </script>
+</body>
+</html>

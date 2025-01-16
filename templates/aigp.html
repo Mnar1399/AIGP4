@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIGP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #29292a;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #343a40; /* Dark background */
+    padding: 15px 20px; /* Larger padding for height */
+    border-bottom: 2px solid #007bff; /* Blue border bottom */
+    height: 80px; /* Ensures consistent height */
+}
+
+/* Profile Button (Circular Image) */
+.navbar-profile img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Makes the image circular */
+    border: 2px solid #007bff; /* Blue border */
+    object-fit: cover; /* Ensures the image is properly cropped */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar-profile img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+    border-color: #0056b3; /* Change border color on hover */
+}
+
+/* Navigation Menu */
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Matches the navbar height */
+    align-items: center; /* Vertically centers items */
+}
+
+.navbar-menu li {
+    margin-left: 30px; /* Space between items */
+}
+
+.navbar-menu li a {
+    text-decoration: none;
+    font-size: 18px; /* Slightly larger font */
+    font-weight: bold;
+    color: white; /* White text */
+    transition: color 0.3s ease;
+    padding: 15px 10px; /* Increases clickable area */
+}
+
+.navbar-menu li a:hover {
+    color: #007bff; /* Blue hover effect */
+}
+
+/* Responsive Design (Optional) */
+@media (max-width: 768px) {
+    .navbar-menu {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-menu li {
+        margin: 10px 0;
+    }
+}
+        .hero {
+            position: relative;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+        }
+        .hero img {
+            width: 100%;
+            height: auto;
+        }
+        .hero-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .hero-text h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .hero-text button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .hero-text button:hover {
+            background-color: #0056b3;
+        }
+        .section-title {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 2rem;
+            color: #343a40;
+        }
+        .carousel {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        .carousel-item {
+            width: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            overflow: hidden;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .carousel-item h3 {
+            margin: 10px 0;
+            font-size: 1.5rem;
+        }
+        .carousel-item p {
+            font-size: 1rem;
+            padding: 0 10px 10px;
+        }
+        .carousel-item button {
+            margin: 10px 0 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .carousel-item button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <!-- Profile Button -->
+        <a href="/profile" class="navbar-profile">
+            <img src="{{ url_for('static', filename='images/profile.webp') }}" alt="Profile Image">
+        </a>
+        <!-- Navigation Links -->
+         
+        <ul class="navbar-menu">
+            <li><a href="/aigp">Home</a></li>
+            <li><a href="/">Game Idea</a></li>
+            <li><a href="/task">Task</a></li>
+            <li><a href="/cost">VR</a></li>
+            <li><a href="/draw">Draw</a></li>
+            <li><a href="/feedback">Feedback</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <img src="{{ url_for('static', filename='images/hero-image.png') }}" alt="Hero Image">
+        <div class="hero-text">
+            <h1>AIGP - Artificial Intelligence Game Platform</h1>
+            <p>A platform dedicated to assisting game developers in analyzing their game ideas using modern AI technologies. The goal of the website is to provide comprehensive support to developers at all stages of game development, from idea analysis to cost estimation and task execution.</p>
+            <button onclick="location.href='/register'">SingUp</button>
+        </div>
+    </div>
+
+    <h2 class="section-title">Our Tools</h2>
+    <div class="carousel">
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/image1.png') }}" alt="Advanced Idea Analysis">
+            <h3>Idea Analysis & Recommendations</h3>
+            <p>Utilize AI tools to transform game ideas into detailed plans, identifying opportunities and challenges while offering personalized recommendations to enhance design and mechanics.</p>
+            <button onclick="location.href='/'">Try the tool</button>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/ROBOT.png') }}" alt="Pixel Art Drawing">
+            <h3>Pixel Art Drawing</h3>
+            <p>Use this tool to draw and design pixel art for your game. Perfect for creating retro-style graphics!</p>
+            <button onclick="location.href='/draw'">Try the tool</button>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/image3.png') }}" alt="Task Management">
+            <h3>Task Management</h3>
+            <p>Provide actionable steps for major project tasks and suggestions to enhance productivity.</p>
+            <button onclick="location.href='/task'">Try the tool</button>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/image2.png') }}" alt="VR Development">
+            <h3>VR Development</h3>
+            <p>A tool designed to help developers create and manage VR-based game experiences efficiently using modern engines like Unity and Unreal Engine.</p>
+            <button onclick="location.href='/cost'">Try the tool</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 AIGP. All Rights Reserved.
+    </footer>
+</body>
+</html>
