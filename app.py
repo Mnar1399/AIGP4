@@ -18,16 +18,20 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-# Azure configuration
-text_analytics_endpoint = "https://projectgame.cognitiveservices.azure.com/"
-text_analytics_key = "2KzapW8uHvXU36izit7Gqf299IOmrOfeBnNFCPnI3uczFZsiQDVJJQQJ99AKACYeBjFXJ3w3AAAaACOGPojV"
-openai_endpoint = "https://botgame.openai.azure.com"
-openai_key = "EyoMKPi0cdmUAujXRhLdlPew6vrPnHr9Zyj0EswXpopsuerw3MQ7JQQJ99ALACYeBjFXJ3w3AAABACOGfOMX"
+import json
 
+# قراءة المفاتيح من ملف config.json
+with open('config.json') as f:
+    config = json.load(f)
 
+# تعيين المفاتيح من الملف
+openai_key = config["openai_key"]
+text_analytics_key = config["text_analytics_key"]
+openai_endpoint = config["openai_endpoint"]  # تأكد من أن المفتاح هنا هو "openai_endpoint" كما هو في config.json
 
-dalle_endpoint = "https://botgame.openai.azure.com/openai/deployments/dall-e-2/images/generations?api-version=2024-02-01"
-api_key = "AfY1bCSzSAu9x1qKuEpDazoEf1Buag4HlqUrv8mQrgfFtD27Vq42JQQJ99BAACYeBjFXJ3w3AAABACOGu9Ea"
+# الآن يمكنك استخدام هذه المفاتيح في الكود
+print(openai_key)  # فقط للتأكد من أن المفاتيح تم قراءتها بشكل صحيح
+
 
 
 app = Flask(__name__)
