@@ -22,6 +22,13 @@ jobs:
         with:
           python-version: '3.12'
 
+
+      # تثبيت الحزم النظامية المطلوبة
+‏      - name: Install system dependencies
+‏        run: |
+‏          sudo apt-get update
+‏          sudo apt-get install -y libjpeg-dev zlib1g-dev
+
       - name: Create and start virtual environment
         run: |
           python -m venv venv
